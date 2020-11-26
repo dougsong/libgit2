@@ -6,16 +6,17 @@
  */
 
 #include "alloc.h"
+#include "runtime.h"
 
 #include "allocators/stdalloc.h"
-#include "allocators/win32_crtdbg.h"
+#include "allocators/win32_leakcheck.h"
 
 git_allocator git__allocator;
 
 static int setup_default_allocator(void)
 {
-#if defined(GIT_MSVC_CRTDBG)
-	return git_win32_crtdbg_init_allocator(&git__allocator);
+#if defined(GIT_WIN32_LEAKCHECK)
+	return git_win32_leakcheck_init_allocator(&git__allocator);
 #else
 	return git_stdalloc_init_allocator(&git__allocator);
 #endif
